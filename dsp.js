@@ -53,33 +53,6 @@ var DSP = {
   TWO_PI:         2*Math.PI
 };
 
-// Setup arrays for platforms which do not support byte arrays
-function setupTypedArray(name, fallback) {
-  // check if TypedArray exists
-  // typeof on Minefield and Chrome return function, typeof on Webkit returns object.
-  if (typeof this[name] !== "function" && typeof this[name] !== "object") {
-    // nope.. check if WebGLArray exists
-    if (typeof this[fallback] === "function" && typeof this[fallback] !== "object") {
-      this[name] = this[fallback];
-    } else {
-      // nope.. set as Native JS array
-      this[name] = function(obj) {
-        if (obj instanceof Array) {
-          return obj;
-        } else if (typeof obj === "number") {
-          return new Array(obj);
-        }
-      };
-    }
-  }
-}
-
-setupTypedArray("Float64Array", "WebGLFloatArray");
-setupTypedArray("Int32Array",   "WebGLIntArray");
-setupTypedArray("Uint16Array",  "WebGLUnsignedShortArray");
-setupTypedArray("Uint8Array",   "WebGLUnsignedByteArray");
-
-
 ////////////////////////////////////////////////////////////////////////////////
 //                            DSP UTILITY FUNCTIONS                           //
 ////////////////////////////////////////////////////////////////////////////////
